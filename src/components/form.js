@@ -1,19 +1,31 @@
 import React,{useState} from "react"
+import {testInfo} from "../services/test"
 
 const Form = props => {
     const [question,setQuestion] = useState('')
     const [answer,setAnswer] = useState('')
+    const [res,setRes] = useState(null)
+
     const clear = () => {
         setQuestion('')
         setAnswer('')
     }
+
     const handler = (e) => {
         e.preventDefault()
+
+        const result = testInfo({
+            question,
+            answer
+        })
+        
+        setRes(result)
+
         clear()
     }
-    console.log(question,answer)
+
     return (
-        <form action="/form_handler" method="POST" onSubmit={handler}>
+        <form onSubmit={handler}>
             <input 
                 type="text" 
                 name="question" 
@@ -28,6 +40,7 @@ const Form = props => {
                 value={answer}
                 onChange={(e)=>setAnswer(e.target.value)}
             />
+            {res && <p>{res}</p>}
             <button>Добавить вопрос</button>
         </form>
     )
